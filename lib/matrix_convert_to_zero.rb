@@ -3,44 +3,40 @@
 # If any number is found to be 0, the method updates all the numbers in the
 # corresponding row as well as the corresponding column to be 0.
 
-# time complexity of below solution would be O(n*m) and space complexity would also be O(n*m)
+# time complexity of below solution would be O(n*m) and space complexity would also be O(n+m)
 
 def matrix_convert_to_0(matrix)
   # matrix.length = number of rows
   # matrix[i].length = number of cols
 
-  i_to_change = Array.new(matrix.length)
-  j_to_change = []
+  rows_to_change = Array.new(matrix.length)
+  cols_to_change = Array.new(matrix[0].length)
 
   i = 0
   while i < matrix.length
     j = 0
     while j < matrix[0].length
       if matrix[i][j] == 0
-        i_to_change[i] = true
-        j_to_change << j
-        j = matrix[0].length
-      else
-        i_to_change[i] = false
-        j += 1
+        rows_to_change[i] =  true
+        cols_to_change[j] = true
       end
+      j += 1
     end
     i += 1
   end
 
   i = 0
-  while i < i_to_change.length
-    if i_to_change[i] == true
-      j = 0
+  while i < rows_to_change.length
+    j = 0
+    if rows_to_change[i] == true
       while j < matrix[i].length
         matrix[i][j] = 0
         j += 1
       end
-    else # i_to_change == false
-      k = 0
-      while k < j_to_change.length
-        matrix[i][j_to_change[k]] = 0
-        k += 1
+    else # rows_to_change == false
+      while j < cols_to_change.length
+        matrix[i][j] = 0 if cols_to_change[j] == true
+        j+= 1
       end
     end
     i += 1
