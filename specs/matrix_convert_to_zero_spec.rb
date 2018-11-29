@@ -2,6 +2,21 @@ require 'minitest/autorun'
 require 'minitest/reporters'
 require_relative '../lib/matrix_convert_to_zero'
 
+def print_matrix(matrix)
+  # deduce the rows and columns in the matrix
+  rows = matrix.size
+  columns = matrix[0].size
+
+  rows.times do |row|
+    columns.times do |column|
+      print matrix[row][column]
+      print " "
+    end
+    puts
+  end
+  puts
+end
+
 # helper method for creating and initializing a matrix with all 1s
 def initialize_matrix(rows, columns)
   # create the matrix using the rows and columns
@@ -69,6 +84,76 @@ describe "matrix convert to zero" do
       # method call
       matrix_convert_to_0(matrix)
 
+      # validation
+      verify_matrix(matrix, rows_array, columns_array)
+    end
+
+    it "only first cell is zero" do
+      #setup
+      rows = 3
+      columns = 6
+      matrix = initialize_matrix(rows, columns)
+      matrix[0][0] = 0 # row 0, column 0
+      rows_array = [0]
+      columns_array = [0]
+
+      # method call
+      matrix_convert_to_0(matrix)
+
+      # validation
+      verify_matrix(matrix, rows_array, columns_array)
+    end
+
+    it "only middle cell is zero" do
+      #setup
+      rows = 5
+      columns = 7
+      matrix = initialize_matrix(rows, columns)
+      matrix[2][3] = 0 # row 2, column 3
+      rows_array = [2]
+      columns_array = [3]
+
+      # method call
+      matrix_convert_to_0(matrix)
+
+      # validation
+      verify_matrix(matrix, rows_array, columns_array)
+    end
+
+    it "only the last cell is zero" do
+      #setup
+      rows = 8
+      columns = 7
+      matrix = initialize_matrix(rows, columns)
+      matrix[7][6] = 0 # row 7, column 6
+      rows_array = [7]
+      columns_array = [6]
+
+      # method call
+      matrix_convert_to_0(matrix)
+
+      # validation
+      verify_matrix(matrix, rows_array, columns_array)
+    end
+
+    it "not all rows, not all columns" do
+      # setup
+      rows = 4
+      columns = 5
+      matrix = initialize_matrix(rows, columns)
+      matrix[0][3] = 0 # row 0, column 1
+      matrix[0][4] = 0 # row 1, column 1
+      matrix[2][1] = 0 # row 2, column 1
+      rows_array = [0, 2]
+      columns_array = [1, 3, 4]
+
+      puts "Original:"
+      print_matrix(matrix)
+      # method call
+      matrix_convert_to_0(matrix)
+
+      puts "Converted:"
+      print_matrix(matrix)
       # validation
       verify_matrix(matrix, rows_array, columns_array)
     end
